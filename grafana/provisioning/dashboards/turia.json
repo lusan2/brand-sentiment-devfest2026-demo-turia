@@ -1,0 +1,824 @@
+{
+  "id": null,
+  "uid": "turia-brand-sentiment",
+  "title": "Turia — Sentimiento de Marca (Demo)",
+  "tags": [
+    "turia",
+    "sentiment",
+    "cerveza",
+    "demo"
+  ],
+  "timezone": "browser",
+  "refresh": "5m",
+  "time": {
+    "from": "now-6M",
+    "to": "now"
+  },
+  "schemaVersion": 36,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Resumen General",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Total Menciones Turia",
+      "description": "Menciones directas a la cerveza Turia",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "text": {}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND mention_type = 'brand' AND market = 'ES' AND parse_error = false",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Menciones Positivas",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "text": {}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND mention_type = 'brand' AND sentiment = 'positive' AND market = 'ES' AND parse_error = false",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Menciones Negativas",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "text": {}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND mention_type = 'brand' AND sentiment = 'negative' AND market = 'ES' AND parse_error = false",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Share of Voice",
+      "description": "Menciones de Turia / (Turia + competidores) × 100",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "text": {}
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT ROUND(100.0 * SUM(CASE WHEN mention_type = 'brand' THEN 1 ELSE 0 END) / NULLIF(SUM(CASE WHEN mention_type IN ('brand','competitor') THEN 1 ELSE 0 END), 0), 1) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND market = 'ES' AND parse_error = false",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "piechart",
+      "title": "% Sentimiento (marca)",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "pieType": "pie",
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT sentiment AS metric, COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND mention_type = 'brand' AND market = 'ES' AND parse_error = false GROUP BY sentiment ORDER BY value DESC",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "metric"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "row",
+      "title": "Evolución Temporal",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "panels": []
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Menciones por Sentimiento",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT $__timeGroupAlias(timestamp,$__interval,0), COUNT(*) AS \"Positivo\" FROM sentiment_mentions WHERE $__timeFilter(timestamp) AND brand = 'TURIA' AND mention_type = 'brand' AND sentiment = 'positive' AND market = 'ES' AND parse_error = false GROUP BY 1 ORDER BY 1",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT $__timeGroupAlias(timestamp,$__interval,0), COUNT(*) AS \"Negativo\" FROM sentiment_mentions WHERE $__timeFilter(timestamp) AND brand = 'TURIA' AND mention_type = 'brand' AND sentiment = 'negative' AND market = 'ES' AND parse_error = false GROUP BY 1 ORDER BY 1",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT $__timeGroupAlias(timestamp,$__interval,0), COUNT(*) AS \"Neutral\" FROM sentiment_mentions WHERE $__timeFilter(timestamp) AND brand = 'TURIA' AND mention_type = 'brand' AND sentiment = 'neutral' AND market = 'ES' AND parse_error = false GROUP BY 1 ORDER BY 1",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "row",
+      "title": "Análisis Competitivo",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "panels": []
+    },
+    {
+      "id": 21,
+      "type": "barchart",
+      "title": "Turia vs Competidores — Volumen de Menciones",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "orientation": "horizontal",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT CASE COALESCE(entity,'') WHEN 'TURIA' THEN 'Turia' WHEN 'amstel_oro' THEN 'Amstel Oro' WHEN 'san_miguel_selecta' THEN 'San Miguel Selecta' WHEN '1906' THEN '1906 Reserva Especial' WHEN 'mahou_maestra' THEN 'Mahou Maestra' WHEN 'alhambra_reserva' THEN 'Alhambra Reserva 1925' WHEN 'cruzcampo_tostada' THEN 'Cruzcampo Gran Reserva' WHEN 'moritz_epidor' THEN 'Moritz Epidor' ELSE 'Otro' END AS metric, COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND market = 'ES' AND parse_error = false AND mention_type IN ('brand','competitor') GROUP BY 1 ORDER BY value DESC LIMIT 10",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "barchart",
+      "title": "Tono por Entidad (−1 neg → +1 pos)",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "orientation": "horizontal",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT CASE COALESCE(entity,'') WHEN 'TURIA' THEN 'Turia' WHEN 'amstel_oro' THEN 'Amstel Oro' WHEN 'san_miguel_selecta' THEN 'San Miguel Selecta' WHEN '1906' THEN '1906 Reserva Especial' WHEN 'mahou_maestra' THEN 'Mahou Maestra' WHEN 'alhambra_reserva' THEN 'Alhambra Reserva 1925' WHEN 'cruzcampo_tostada' THEN 'Cruzcampo Gran Reserva' WHEN 'moritz_epidor' THEN 'Moritz Epidor' ELSE 'Otro' END AS metric, ROUND(AVG(sentiment_score)::numeric, 2) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND market = 'ES' AND parse_error = false AND mention_type IN ('brand','competitor') GROUP BY 1 ORDER BY value DESC LIMIT 10",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "row",
+      "title": "Por Fuente",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "panels": []
+    },
+    {
+      "id": 31,
+      "type": "barchart",
+      "title": "Menciones por Fuente",
+      "description": "Dónde se habla de Turia y su categoría",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "orientation": "horizontal",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT source AS metric, COUNT(*) AS value FROM sentiment_mentions WHERE brand = 'TURIA' AND market = 'ES' AND parse_error = false GROUP BY 1 ORDER BY value DESC LIMIT 10",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "row",
+      "title": "Menciones Recientes",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "panels": []
+    },
+    {
+      "id": 41,
+      "type": "table",
+      "title": "Últimas Menciones — Turia",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Fecha"
+          }
+        ]
+      },
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "url"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Abrir",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tono"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "positive": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Positivo"
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "negative": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Negativo"
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "neutral": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "Neutral"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fuente"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          }
+        ],
+        "defaults": {}
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT timestamp, title, sentiment AS level, sentiment_score, source, url FROM sentiment_mentions WHERE brand = 'TURIA' AND mention_type = 'brand' AND market = 'ES' AND parse_error = false ORDER BY timestamp DESC LIMIT 500",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "renameByName": {
+              "timestamp": "Fecha",
+              "title": "Titular",
+              "level": "Tono",
+              "sentiment_score": "Score",
+              "source": "Fuente",
+              "url": "Enlace"
+            },
+            "indexByName": {
+              "timestamp": 0,
+              "title": 1,
+              "level": 2,
+              "sentiment_score": 3,
+              "source": 4,
+              "url": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "type": "table",
+      "title": "Todas las Menciones (marca + competidores + oportunidad)",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Fecha"
+          }
+        ]
+      },
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "url"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Abrir",
+                    "url": "${__value.raw}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tono"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "positive": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Positivo"
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "negative": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Negativo"
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "neutral": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "Neutral"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "defaults": {}
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT timestamp, title, entity, mention_type, sentiment AS level, sentiment_score, source, url FROM sentiment_mentions WHERE brand = 'TURIA' AND market = 'ES' AND parse_error = false ORDER BY timestamp DESC LIMIT 1000",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "renameByName": {
+              "timestamp": "Fecha",
+              "title": "Titular",
+              "entity": "Entidad",
+              "mention_type": "Tipo",
+              "level": "Tono",
+              "sentiment_score": "Score",
+              "source": "Fuente",
+              "url": "Enlace"
+            },
+            "indexByName": {
+              "timestamp": 0,
+              "title": 1,
+              "entity": 2,
+              "mention_type": 3,
+              "level": 4,
+              "sentiment_score": 5,
+              "source": 6,
+              "url": 7
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "table",
+      "title": "Rating Birrapedia (0–5)",
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 59
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "postgres-ds"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "postgres-ds"
+          },
+          "format": "table",
+          "rawSql": "SELECT title AS cerveza, rating AS rating, rating_count AS valoraciones FROM sentiment_mentions WHERE brand = 'TURIA' AND source = 'birrapedia' AND rating IS NOT NULL ORDER BY rating DESC",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
