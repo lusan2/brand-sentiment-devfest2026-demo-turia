@@ -1,0 +1,36 @@
+# Environment variables — never commit API keys
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Docker volumes / data
+postgres-data/
+grafana-data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Claude Code
+.claude/
+
+# Scripts — checkpoint de reprocesado
+scripts/.reprocess_checkpoint.json
+
+# Instaladores
+*.deb
+*.exe
+*.pkg
