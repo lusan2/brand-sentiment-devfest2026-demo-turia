@@ -1,0 +1,14 @@
+# No copiar secretos ni basura a la imagen Docker (el Dockerfile hace COPY . .)
+.env
+.env.*
+!.env.example
+
+.git
+.gitignore
+.dockerignore
+
+__pycache__/
+*.py[cod]
+*.md
+.DS_Store
+scripts/.reprocess_checkpoint.json
