@@ -6,6 +6,9 @@
 **ES:** monitorización de sentimiento de marca en tiempo real para *Cerveza Turia* (marca **no cliente**, elegida por ser una cerveza tostada/Märzen valenciana) y 7 competidores, montada como demo pública para la charla del DevFest Valencia 2026.
 
 ---
+## Talk slides
+
+📄 [Download the talk slides (PDF)](./slides-devfest-valencia-2026.pdf)
 
 ## What it does
 
