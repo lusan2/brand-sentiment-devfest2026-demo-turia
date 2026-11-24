@@ -21,13 +21,12 @@ Each mention is classified into one of three buckets:
 
 Sentiment (`positive` / `neutral` / `negative`, scored -1..1) is produced by **Claude Haiku 4.5**.
 
-## Demo results (as of 2026-11-18)
+## Demo results (as of 2026-11-20)
 
-- **388 mentions** indexed, 0 parse errors.
-- Sources: Bluesky 156 · YouTube 123 · X 100 · Birrapedia 5 · Google News 2 · Arctic Shift 1 · NewsAPI 1.
-- **7 competitors**: Amstel Oro · 1906 · Mahou Maestra · Alhambra 1925 · San Miguel Selecta · Cruzcampo Gran Reserva · Moritz Epidor. Turia **Share of Voice ≈ 31%**.
-- **Key insight from the talk:** Turia wins in mention volume but *loses in sentiment* (+0.39) vs. Alhambra (+0.50), 1906 (+0.43) and Mahou (+0.43). *"More conversation ≠ better perception."*
-- **Cost:** the one-off demo cost **~$1.30** in LLM calls (≈ 1,600 requests across the pipeline); recurring runs are cents/month in LLM — the recurring cost is dominated by the ~€10-15 VPS, not the AI.
+- **333 mentions** indexed, 0 parse errors (107 brand · 178 competitor · 48 opportunity).
+- Sources: Bluesky 156 · X 100 · YouTube 67 · Birrapedia 5 · Google News 3 · Arctic Shift 1 · NewsAPI 1.
+- **7 competitors**: Amstel Oro · 1906 · Mahou Maestra · Alhambra 1925 · San Miguel Selecta · Cruzcampo Gran Reserva · Moritz Epidor. Turia **Share of Voice ≈ 37.5%**.
+- **Key insight from the talk:** Turia wins in mention volume (107) but *loses in sentiment* (+0.39) vs. 1906 (+0.59), San Miguel Selecta (+0.52) and Alhambra (+0.51). *"More conversation ≠ better perception."*
 
 ## Architecture
 
